@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:insert="/includes/head::head"></div>
+
+<body>
+
+<div class="top" >
+    <a href="/medicalonlinebookingservice">Home Page</a>
+    <a href="/medicalonlinebookingservice/profile">[[${currentUserPassword.getFullName}]]</a>
+</div>
+
+<div class="container">
+
+    <div th:replace="/includes/header"></div>
+    <div th:replace="/includes/nav"></div>
+
+    <div class="text" th:if="${currentUserPassword.getUser().getRole == T(com.example.medicalonlinebookingservice.entity.enums.Role).ADMIN}">
+        <h2> Admin: [[${currentUserPassword.getFullName}]] ([[${currentUserPassword.getUser().getPhoneNumber()}]])</h2>
+    </div>
+
+    <div class="text" th:if="${currentUserPassport.getUser().getRole == T(com.example.medicalonlinebookingservice.entity.enums.Role).DOCTOR}">
+        <h2> Doctor: [[${currentUserPassport.getFullName}]]  ([[${currentUserPassport.getUser().getPhoneNumber()}]])</h2>
+    </div>
+
+    <div class="text" th:if="${currentUserPassport.getUser().getRole == T(com.example.medicalonlinebookingservice.entity.enums.Role).PATIENT}">
+        <h2> Patient: [[${currentUserPassport.getFullName}]]  ([[${currentUserPassport.getUser().getPhoneNumber()}]])</h2>
+    </div>
+
+    <form th:method="POST" th:action="@{/logout}">
+        <input type="submit" value="Logout"/>
+    </form>
+    <hr>
+    <br/>
+
+    <div class="user-passport">
+
+        <div class="fields-names">
+            <h4>First name:</h4>
+            <h4>Last name:</h4>
+            <h4>Father name:</h4>
+            <h4>Date of birth:</h4>
+            <h4>Gender:</h4>
+            <h4>Authority:</h4>
+        </div>
+
+        <div class="fields-values">
+            <h4>[[${currentUserPassport.getFirstName}]]</h4>
+            <h4>[[${currentUserPassport.getLastName}]]</h4>
+            <h4>[[${currentUserPassport.getFathersName}]]</h4>
+            <h4>[[${currentUserPassport.getDateOfBirth}]]</h4>
+            <h4>[[${currentUserPassport.getGender}]]</h4>
+            <h4>[[${currentUserPassport.getNumber}]]</h4>
+        </div>
+
+    </div>
+    <br/>
+
+    <div th:unless="${currentUser.getRole == T(com.example.medicalonlinebookingservice.entity.enums.Role).ADMIN}">
+        <form th:method="GET" th:action="@{/profile/card}">
+            <input type="submit" value="View my medical card"/>
+        </form>
+    </div>
+
+    <br/>
+    <h4 align="center">Addresses</h4>
+    <div class="address" style="width:100%; padding:5px; display:flex; justify-content:center;">
+        <table border="1" style="width:70%">
+            <thead>
+            <tr>
+                <th>City</th>
+                <th>Street</th>
+                <th>House</th>
+                <th>Flat</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${currentUserPassport.getUser().getAddresses().empty}">
+                <td colspan="2"> No Addresses Available </td>
+            </tr>
+            <tr th:each="address : ${currentUserPassport.getUser().getAddresses()}">
+                <td><span th:text="${address.city}"> City </span></td>
+                <td><span th:text="${address.street}"> Street </span></td>
+                <td><span th:text="${address.house}"> House </span></td>
+                <td><span th:text="${address.flat}"> Flat </span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <br/>
+    <hr>
+    <br/>
+
+    <div th:unless="${currentUserPassport.getUser().getRole == T(by.kostopravov.polyclinic.dto.enums.Role).PATIENT}"
+         style="width:100%;">
+        <h3 align="center">Enter patient's phone number: </h3>
+        <form style="display: flex; justify-content: center;">
+            <input type="text" id="phoneNumberForFindUser"/>
+            <button style="width:100px" type="button" onclick="showUser()"> find </button>
+        </form>
+    </div>
+
+    <div id="findUser" style="display: flex; justify-content: center; padding:10px;">
+
+    </div>
+
+</div>
+<script type="text/javascript" th:src="@{/js/showuser.js}"></script>
+</body>
+</html>

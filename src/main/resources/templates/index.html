@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns : th="http: // thymeleaf.org">
+
+<div th:insert="/includes::head"></div>
+
+<body>
+<div class="top">
+    <a th:if="${currentUserPassword == null}" href="/medicalonlinebookingservice/registration">Registration</a>
+    <a th:if="${currentUserPassword == null}" href="/medicalonlinebookingservice/login">Login</a>
+</div>
+<div class="container">
+    <div class="header">
+        <div class="tittle-block">
+            <h1>Medical Center</h1>
+        </div>
+        <div class="label-picture">
+            <img th:src="@{/images/logo.jpg}"/>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="content">
+            <h3></h3>
+            <p align="justify">123
+            </p>
+        </div>
+        <div class="sidebar">
+            <h3>The working hours of the medical center:</h3>
+            <ul class="timetable">
+                <li>  Monday    8:00 - 20:00</li>
+                <li>  Tuesday   8:00 - 20:00</li>
+                <li>  Wednesday 8:00 - 20:00</li>
+                <li>  Thursday  8:00 - 20:00</li>
+                <li>  Friday    8:00 - 20:00</li>
+                <li>  Saturday  9:00 - 15:00</li>
+                <li>  Sunday    Day off </li>
+            </ul>
+        </div>
+    </div>
+    <div class="nav">
+        <h3>Health News in the World</h3>
+        <ul>
+            <li><a href="http://www.minzdrav.gov.by/" target="_blank">Health in Belarus</a></li>
+            <li><a href="https://www.who.int/home" target="_blank">World Health Organization</a></li>
+        </ul>
+    </div>
+
+</div>
+
+</body>
+</html>
