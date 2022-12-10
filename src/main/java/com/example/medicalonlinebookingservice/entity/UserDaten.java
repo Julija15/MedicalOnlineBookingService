@@ -24,8 +24,10 @@ public class UserDaten extends AbstractEntity {
     @NotEmpty
     private String flat;
 
-    @ManyToMany
-    List<User> users;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "date_of_birth")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -34,5 +36,13 @@ public class UserDaten extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
 }

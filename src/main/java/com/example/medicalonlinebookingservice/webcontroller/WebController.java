@@ -70,20 +70,20 @@ public class WebController {
         }
     }
 
-    @GetMapping("/profile")
-    public String UserPage(@AuthenticationPrincipal UserDetails authUser, Model model) {
-        User user = userService.findByUser(authUser.getUsername());
-        UserDetails currentUserDaten = userService.loadUserByUsername(authUser.getUsername());
-        model.addAttribute("currentUserDaten", currentUserDaten);
-        model.addAttribute("user", user);
-        if (user.getRole() == Role.ADMIN) {
-            return "redirect: /profile/admin";
-        }
-        if (user.getRole() == Role.DOCTOR) {
-            return "redirect: /profile/doctor";
-        }
-        return "profile";
-    }
+//    @GetMapping("/profile")
+//    public String UserPage(@AuthenticationPrincipal UserDetails authUser, Model model) {
+//        User user = userService.findByUser(authUser.getUsername());
+//        UserDetails currentUserDaten = userService.loadUserByUsername(authUser.getUsername());
+//        model.addAttribute("currentUserDaten", currentUserDaten);
+//        model.addAttribute("user", user);
+//        if (user.getRole() == Role.ADMIN) {
+//            return "redirect: /profile/admin";
+//        }
+//        if (user.getRole() == Role.DOCTOR) {
+//            return "redirect: /profile/doctor";
+//        }
+//        return "profile";
+//    }
 }
 
 

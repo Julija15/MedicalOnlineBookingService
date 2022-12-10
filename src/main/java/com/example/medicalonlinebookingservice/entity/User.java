@@ -55,6 +55,10 @@ public class User implements UserDetails {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Visit> visitList;
 
+    @OneToOne
+    @JoinColumn(name = "user_daten_id")
+    private UserDaten userDaten;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 

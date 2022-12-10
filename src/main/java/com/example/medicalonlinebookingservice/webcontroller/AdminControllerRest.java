@@ -1,5 +1,8 @@
 package com.example.medicalonlinebookingservice.webcontroller;
 
+import com.example.medicalonlinebookingservice.entity.Doctor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -7,5 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin")
 public class AdminControllerRest {
 
-    private
+    @PostMapping("/admin")
+   public ResponseEntity<Doctor> updateDoctor
 }

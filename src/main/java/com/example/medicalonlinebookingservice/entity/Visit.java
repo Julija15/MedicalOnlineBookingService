@@ -4,7 +4,7 @@ import com.example.medicalonlinebookingservice.entity.enums.Specialist;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
+
 
 @Entity
 @Table(name = "visits")

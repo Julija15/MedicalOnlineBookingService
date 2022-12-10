@@ -12,6 +12,8 @@ import java.util.List;
 @Table(name = "doctors")
 public class Doctor extends User {
 
+    private Specialist specialist;
+
     @ManyToMany
     private List<Visit> visits;
 
