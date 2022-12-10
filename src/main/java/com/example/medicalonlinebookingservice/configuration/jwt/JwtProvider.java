@@ -9,7 +9,6 @@ import java.time.ZoneOffset;
 import java.util.Date;
 
 public class JwtProvider {
-    // JSESSEONID
     private String jwtSecret = "jwtsecret" ;
     public String generationToken(String username) {
         Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay().toInstant(ZoneOffset.UTC));
@@ -35,7 +34,7 @@ public class JwtProvider {
         return claims.getSubject();
     }
     public String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader("Authorization");
+        String bearerToken = req.getHeader("Registration");
         if (bearerToken != null && bearerToken.startsWith("Bearer_")) {
             return bearerToken.substring(7, bearerToken.length());
         }

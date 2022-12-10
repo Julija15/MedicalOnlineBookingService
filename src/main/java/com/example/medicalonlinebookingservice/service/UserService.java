@@ -1,6 +1,7 @@
 package com.example.medicalonlinebookingservice.service;
 
 import com.example.medicalonlinebookingservice.entity.UserDaten;
+import com.example.medicalonlinebookingservice.repository.UserDatenRepository;
 import com.example.medicalonlinebookingservice.repository.UserRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +18,11 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    private final UserDatenRepository userDatenRepository;
+
+    public UserService(UserRepository userRepository, UserDatenRepository userDatenRepository) {
         this.userRepository = userRepository;
+        this.userDatenRepository = userDatenRepository;
     }
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -38,4 +42,14 @@ public class UserService implements UserDetailsService {
         return userRepository.findByPhoneNumber(phoneNumber).orElseThrow(() ->
                 new IllegalArgumentException("User not exists"));
     }
+
+    public User findUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("User not exist"));
+    }
+
+    public UserDaten findUserDatenByUser(User user){
+        return userDatenRepository.findUserDatenByUser(user);
+    }
+
 }

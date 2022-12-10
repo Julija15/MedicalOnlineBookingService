@@ -52,7 +52,7 @@ public class User implements UserDetails {
     @Column(name = "created_at")
     private LocalDate createdAt;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Visit> visitList;
 
     @Enumerated(EnumType.STRING)
@@ -85,6 +85,10 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Role getRole(){
+        return role;
     }
 
 }

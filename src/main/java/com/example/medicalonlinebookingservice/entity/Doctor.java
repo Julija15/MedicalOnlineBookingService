@@ -1,5 +1,7 @@
 package com.example.medicalonlinebookingservice.entity;
 
+import com.example.medicalonlinebookingservice.entity.enums.Specialist;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -9,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "doctors")
 public class Doctor extends User {
+
     @ManyToMany
     private List<Visit> visits;
 
