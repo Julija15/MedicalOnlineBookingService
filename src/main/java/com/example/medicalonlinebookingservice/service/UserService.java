@@ -52,4 +52,7 @@ public class UserService implements UserDetailsService {
         return userDatenRepository.findUserDatenByUser(user);
     }
 
+    public User addUserRole (User user, String role){
+     return    userRepository.addUserRole(user,role.getClass());
+    }
 }

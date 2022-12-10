@@ -11,4 +11,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Optional<User> findByPhoneNumber(String phoneNumber);
 
     Optional<User> findById(Long id);
+
+    User addUserRole(User user, Class<? extends String> role);
 }

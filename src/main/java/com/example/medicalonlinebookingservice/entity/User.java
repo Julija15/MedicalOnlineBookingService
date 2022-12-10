@@ -65,6 +65,17 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
