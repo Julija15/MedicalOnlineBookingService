@@ -21,7 +21,7 @@ public class Visit extends AbstractEntity {
 
     public LocalDate startOfVisit;
 
-    public LocalDate endOfVisit;
+    public LocalDate dataVisit;
 
     public User getUser() {
         return user;

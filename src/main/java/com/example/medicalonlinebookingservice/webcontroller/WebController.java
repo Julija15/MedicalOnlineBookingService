@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -32,9 +33,8 @@ public class WebController {
     private DoctorService doctorService;
 
 
-    public WebController(UserService userService, DoctorService doctorService) {
+    public WebController(UserService userService,  DoctorService doctorService) {
         this.userService = userService;
-        this.userDaten = userDaten;
         this.doctorService = doctorService;
     }
 
@@ -70,20 +70,20 @@ public class WebController {
         }
     }
 
-//    @GetMapping("/profile")
-//    public String UserPage(@AuthenticationPrincipal UserDetails authUser, Model model) {
-//        User user = userService.findByUser(authUser.getUsername());
-//        UserDetails currentUserDaten = userService.loadUserByUsername(authUser.getUsername());
-//        model.addAttribute("currentUserDaten", currentUserDaten);
-//        model.addAttribute("user", user);
-//        if (user.getRole() == Role.ADMIN) {
-//            return "redirect: /profile/admin";
-//        }
-//        if (user.getRole() == Role.DOCTOR) {
-//            return "redirect: /profile/doctor";
-//        }
-//        return "profile";
-//    }
+    @GetMapping("/profile")
+    public String UserPage(@AuthenticationPrincipal UserDetails authUser, Model model) {
+        User user = userService.findByUser(authUser.getUsername());
+        UserDetails currentUserDaten = (UserDetails) userService.findUserDatenByUser(user);
+        model.addAttribute("currentUserDaten", currentUserDaten);
+        model.addAttribute("user", user);
+        if (user.getRole() == Role.ADMIN) {
+            return "redirect: /profile/admin";
+        }
+        if (user.getRole() == Role.DOCTOR) {
+            return "redirect: /profile/doctor";
+        }
+        return "profile";
+    }
 }
 
 
