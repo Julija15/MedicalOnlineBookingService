@@ -1,13 +1,11 @@
 package com.example.medicalonlinebookingservice.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "free_visits")
 public class FreeVisit extends AbstractEntity{
-
   @ManyToMany
   private List<Visit> visitList;
 

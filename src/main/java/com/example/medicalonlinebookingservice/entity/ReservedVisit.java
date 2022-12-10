@@ -1,13 +1,12 @@
 package com.example.medicalonlinebookingservice.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "reserved_visits")
 public class ReservedVisit extends AbstractEntity {
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

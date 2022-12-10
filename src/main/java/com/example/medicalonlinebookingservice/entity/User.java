@@ -51,8 +51,9 @@ public class User implements UserDetails {
 
     @Column(name = "created_at")
     private LocalDate createdAt;
+
     @ManyToMany
-    private List<UserDaten> addresses;
+    private List<Visit> visitList;
 
     @Enumerated(EnumType.STRING)
     private Role role;

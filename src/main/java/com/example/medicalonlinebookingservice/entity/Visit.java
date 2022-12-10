@@ -16,13 +16,12 @@ public class Visit extends AbstractEntity {
     @JoinColumn(name = "user_id")
     public User user;
 
-    public LocalDate localDate;
-
-    @ManyToMany
-    private List<Visit> visitList;
-
     @Column(name = "created_at")
     private LocalDate createdAt;
+
+    public LocalDate startOfVisit;
+
+    public LocalDate endOfVisit;
 
     public User getUser() {
         return user;
@@ -32,7 +31,4 @@ public class Visit extends AbstractEntity {
         this.user = user;
     }
 
-    public LocalDate startOfVisit;
-
-    public LocalDate endOfVisit;
 }

@@ -2,7 +2,6 @@ package com.example.medicalonlinebookingservice.entity;
 
 import com.example.medicalonlinebookingservice.entity.enums.Gender;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -25,7 +24,7 @@ public class UserDaten extends AbstractEntity {
     @NotEmpty
     private String flat;
 
-    @ManyToMany(mappedBy = "addresses")
+    @ManyToMany
     List<User> users;
 
     @Column(name = "date_of_birth")

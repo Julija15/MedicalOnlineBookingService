@@ -2,8 +2,6 @@ package com.example.medicalonlinebookingservice.webcontroller;
 
 import com.example.medicalonlinebookingservice.entity.UserDaten;
 import com.example.medicalonlinebookingservice.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -56,13 +54,13 @@ public class WebController {
             return "registration";
         }
     }
-        @GetMapping("/profile")
-        public String UserPage(@AuthenticationPrincipal UserDetails authUser, Model model){
-            User user = userService.findByUser(authUser.getUsername(user));
-            UserDetails currentUserDaten = userService.loadUserByUsername(authUser.getUsername());
-            model.addAttribute("currentUserDaten",currentUserDaten);
-            model.addAttribute("user", user);
-            return "profile";
-        }
+//        @GetMapping("/profile")
+//        public String UserPage(@AuthenticationPrincipal UserDetails authUser, Model model){
+//          //  User user = userService.findByUser(authUser.getUsername(user));
+//            UserDetails currentUserDaten = userService.loadUserByUsername(authUser.getUsername());
+//            model.addAttribute("currentUserDaten",currentUserDaten);
+//          //  model.addAttribute("user", user);
+//            return "profile";
+//        }
     }
 
