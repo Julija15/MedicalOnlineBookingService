@@ -1,11 +1,12 @@
 package com.example.medicalonlinebookingservice.webcontroller;
 
+import com.example.medicalonlinebookingservice.entity.User;
 import com.example.medicalonlinebookingservice.service.DoctorService;
 import com.example.medicalonlinebookingservice.service.UserService;
 import com.example.medicalonlinebookingservice.service.VisitService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import javax.management.relation.Role;
@@ -22,6 +23,7 @@ public class AdminControllerRest {
 
     private Role role;
 
+    @Autowired
     public AdminControllerRest(UserService userService, DoctorService doctorService, VisitService visitService, VisitService visitService1) {
         this.userService = userService;
         this.doctorService = doctorService;
@@ -30,12 +32,10 @@ public class AdminControllerRest {
 
 
     @PutMapping("/admin")
-   public ResponseEntity<?> editDoctor(@PathVariable Long id,@RequestBody User doctor){
-      User user = userService.findUserById(id);
-      doctor = userService.addUserRole(user, String.valueOf(DOCTOR));
-      doctorService.save(doctor);
+   public ResponseEntity<?> editUser(@PathVariable Long id,@RequestBody User user){
+      User userDB = userService.findUserById(id);
+      userDB.setRole(user.getRole());
+      userService.save(user);
       return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    public ResponseEntity<User> updateUser()
 }

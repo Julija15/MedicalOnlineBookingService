@@ -1,16 +1,18 @@
 package com.example.medicalonlinebookingservice.entity;
 
 import com.example.medicalonlinebookingservice.entity.enums.Gender;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.List;
 
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-public class UserDaten extends AbstractEntity {
+public class UserData extends AbstractEntity {
 
     @NotEmpty
     private String city;

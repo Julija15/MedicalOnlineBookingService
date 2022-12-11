@@ -4,24 +4,30 @@ import com.example.medicalonlinebookingservice.entity.enums.Specialist;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Entity
 @Table(name = "visits")
 public class Visit extends AbstractEntity {
 
-    public Specialist specialist;
+    public Doctor doctor;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     public User user;
 
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
-    public LocalDate startOfVisit;
+    public LocalDateTime startOfVisit;
 
-    public LocalDate dataVisit;
+    public Visit(Doctor doctor, LocalDateTime time)
+    {
+        this.doctor = doctor;
+        this.startOfVisit = time;
+        this.createdAt = LocalDateTime.now();
+    }
 
     public User getUser() {
         return user;
@@ -31,4 +37,7 @@ public class Visit extends AbstractEntity {
         this.user = user;
     }
 
+    public boolean isReserved(){
+        return user != null;
+    }
 }

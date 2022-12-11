@@ -57,7 +57,7 @@ public class User implements UserDetails {
 
     @OneToOne
     @JoinColumn(name = "user_daten_id")
-    private UserDaten userDaten;
+    private UserData userDaten;
 
     @Enumerated(EnumType.STRING)
     private Role role;

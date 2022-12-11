@@ -1,10 +1,9 @@
 package com.example.medicalonlinebookingservice.service;
 
-import com.example.medicalonlinebookingservice.entity.UserDaten;
-import com.example.medicalonlinebookingservice.repository.UserDatenRepository;
+import com.example.medicalonlinebookingservice.entity.User;
+import com.example.medicalonlinebookingservice.entity.UserData;
+import com.example.medicalonlinebookingservice.repository.UserDataRepository;
 import com.example.medicalonlinebookingservice.repository.UserRepository;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -18,14 +17,14 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    private final UserDatenRepository userDatenRepository;
+    private final UserDataRepository userDataRepository;
 
-    public UserService(UserRepository userRepository, UserDatenRepository userDatenRepository) {
+    public UserService(UserRepository userRepository, UserDataRepository userDataRepository) {
         this.userRepository = userRepository;
-        this.userDatenRepository = userDatenRepository;
+        this.userDataRepository = userDataRepository;
     }
 
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> byUsername = userRepository.findByUsername(username);
         if(byUsername.isPresent()){
             return byUsername.get();
@@ -34,7 +33,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public void save(User authUser, UserDaten userDaten) {
+    public void save(User authUser) {
     userRepository.save(authUser);
     }
 
@@ -48,11 +47,7 @@ public class UserService implements UserDetailsService {
                 new IllegalArgumentException("User not exist"));
     }
 
-    public UserDaten findUserDatenByUser(User user){
-        return userDatenRepository.findUserDatenByUser(user);
-    }
-
-    public User addUserRole (User user, String role){
-     return    userRepository.addUserRole(user,role.getClass());
+    public UserData findUserDataByUser(User user){
+        return userDataRepository.findByUser(user);
     }
 }

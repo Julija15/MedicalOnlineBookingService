@@ -1,7 +1,7 @@
 package com.example.medicalonlinebookingservice.repository;
 
+import com.example.medicalonlinebookingservice.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.User;
 
 import java.util.Optional;
 
@@ -11,6 +11,4 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Optional<User> findByPhoneNumber(String phoneNumber);
 
     Optional<User> findById(Long id);
-
-    User addUserRole(User user, Class<? extends String> role);
 }
