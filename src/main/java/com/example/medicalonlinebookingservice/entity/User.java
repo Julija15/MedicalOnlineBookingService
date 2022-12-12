@@ -1,6 +1,7 @@
 package com.example.medicalonlinebookingservice.entity;
 
 import com.example.medicalonlinebookingservice.entity.enums.Role;
+import com.example.medicalonlinebookingservice.entity.enums.Specialist;
 import com.example.medicalonlinebookingservice.entity.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -44,6 +45,8 @@ public class User implements UserDetails {
 
     @NotBlank(message = "Field must not be empty")
     private String email;
+
+    private Specialist specialist;
 
     @NotEmpty
     @Column(name = "phone_number", unique = true)

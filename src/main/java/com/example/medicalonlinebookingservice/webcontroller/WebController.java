@@ -4,7 +4,6 @@ package com.example.medicalonlinebookingservice.webcontroller;
 import com.example.medicalonlinebookingservice.entity.User;
 import com.example.medicalonlinebookingservice.entity.UserData;
 import com.example.medicalonlinebookingservice.entity.enums.Role;
-import com.example.medicalonlinebookingservice.service.DoctorService;
 import com.example.medicalonlinebookingservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,13 +26,9 @@ public class WebController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private DoctorService doctorService;
 
-
-    public WebController(UserService userService,  DoctorService doctorService) {
+    public WebController(UserService userService) {
         this.userService = userService;
-        this.doctorService = doctorService;
     }
 
     @GetMapping

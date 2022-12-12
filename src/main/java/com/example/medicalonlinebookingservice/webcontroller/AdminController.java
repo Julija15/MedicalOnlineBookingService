@@ -1,46 +1,56 @@
 package com.example.medicalonlinebookingservice.webcontroller;
 
-import com.example.medicalonlinebookingservice.entity.Doctor;
-import com.example.medicalonlinebookingservice.service.DoctorService;
+import com.example.medicalonlinebookingservice.entity.User;
+import com.example.medicalonlinebookingservice.entity.enums.Role;
+import com.example.medicalonlinebookingservice.entity.enums.Specialist;
 import com.example.medicalonlinebookingservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+
 
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/profile")
 public class AdminController {
 
-   @Autowired
-   private UserService userService;
-   @Autowired
-   private DoctorService doctorService;
+    @Autowired
+    private UserService userService;
 
-   @GetMapping("/profile/admin")
-   public String getAdminPage ( Model model,@AuthenticationPrincipal UserDetails authUser){
-   List<Doctor> doctorList = doctorService.findAll();
-   model.addAttribute("doctors",doctorList);
-   return "/profile/admin";
-   }
+    private Specialist specialist;
 
-   @GetMapping("/doctor/{id}")
-   @PostMapping
-   public String creatTimeTable(@PathVariable Long id, LocalDate localDate, Model model){
-      Optional<Doctor> doctor = doctorService.fidById(id);
-      if(doctor.isPresent()){
-         doctorService.creatTimeTable(doctor.get(),localDate);
-      }
-   }
+    public AdminController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/admin")
+    public String getAdminPage(Model model, @AuthenticationPrincipal UserDetails authUser) {
+        List<User> doctorList = userService.findAllDoctors();
+        model.addAttribute("doctors", doctorList);
+        return " /admin";
+    }
+
+    @PostMapping("admin/doctor/{id}")
+    public String creatTimeTable(@PathVariable Long id,@PathVariable LocalDate localDate, Model model) {
+        User doctor = userService.findUserById(id);
+        userService.creatTimeTable(doctor, localDate);
+        model.addAttribute("doctor", doctor);
+        model.addAttribute("localDate",localDate);
+        return "/admin/doctor/{id}";
+    }
+
+
+    @PutMapping("/admin/user/{id}")
+    public String updateUser(@PathVariable Long id, User user, Model model){
+        User userDB = userService.findUserById(id);
+        userService.update(userDB,user);
+        userService.save(userDB);
+        return "/admin/user/{id}";
+    }
 }
