@@ -60,7 +60,7 @@ public class VisitService {
         Optional<User> doctor = userRepository.findById(id);
         List<Visit> visits = new ArrayList<>();
         for (Visit visit : visits) {
-            List<Visit> doctorVisits = visitRepository.findAllByDoctorAndDate(doctor,date).stream().filter(Visit::isNotReserved).collect(Collectors.toList());
+            List<Visit> doctorVisits = visitRepository.findAllByDoctorAndDate(doctor,date).stream().filter(Visit::isReserved).collect(Collectors.toList());
             visits.addAll(doctorVisits);
         }
         return visits;
