@@ -5,25 +5,24 @@ import com.example.medicalonlinebookingservice.entity.User;
 import com.example.medicalonlinebookingservice.entity.Visit;
 import com.example.medicalonlinebookingservice.service.UserService;
 import com.example.medicalonlinebookingservice.service.VisitService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
 
 @Controller
 @RequestMapping("/profile")
 public class PatientController {
 
 
-    private UserService userService;
+    private final UserService userService;
 
-    private VisitService visitService;
+    private final VisitService visitService;
 
 
     public PatientController(UserService userService,VisitService visitService) {
@@ -43,13 +42,35 @@ public class PatientController {
         if(patientRequest == null){
             throw new IllegalArgumentException("UserRequest is empty");
         }
-        List<Visit> visits = visitService.findVisits(patientRequest.getSpecialist(),patientRequest.getDate());
+        List<Visit> visits = visitService.findFreeVisits(patientRequest.getSpecialist(),patientRequest.getDate());
         model.addAttribute("visits", visits);
         return "/";
     }
 
-//    @PostMapping()
-//    public String reservedVisit(LocalDate localDate, User user,Model model){
-//
-//    }
+    @PostMapping()
+    public String reservedVisit(long id, User auth){
+        Optional<Visit> visit = visitService.findById(id);
+        if(visit.isPresent()){
+            if (visit.get().isNotReserved()){
+                Visit reservedvisit = visitService.addUserToVisit(auth,id);
+            }else{
+                throw new IllegalArgumentException("Visit is reserved");
+            }
+        }
+        return "/profile/{id}";
+    }
+
+    @PostMapping()
+    public String deletedVisit(long id, User auth){
+        Optional<Visit> visit = visitService.findById(id);
+        if(visit.isPresent()){
+            if (visit.get().isNotReserved()){
+                throw new IllegalArgumentException("Visit is not reserved");
+
+            }else{
+                Visit deleteVisit = visitService.deleteUserFromVisit(id, auth);
+            }
+        }
+        return "/profile/{id}";
+    }
 }

@@ -86,11 +86,5 @@ public class UserService implements UserDetailsService {
         return userRepository.findAllByRole(DOCTOR.name());
     }
 
-    public List<Visit> findAllVisits(User doctor, LocalDate localDate) {
-       Optional<User> doctor = userRepository.findById(user.getId());
-      List<Visit> visits = 
-      return visits;
-      
-    }
 }
 

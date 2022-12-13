@@ -44,4 +44,7 @@ public class Visit extends AbstractEntity {
         this.patient = patient;
     }
 
+    public boolean isNotReserved(){
+        return patient == null;
+    }
 }
