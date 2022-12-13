@@ -5,6 +5,8 @@ import com.example.medicalonlinebookingservice.entity.User;
 import com.example.medicalonlinebookingservice.entity.Visit;
 import com.example.medicalonlinebookingservice.service.UserService;
 import com.example.medicalonlinebookingservice.service.VisitService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Controller
@@ -48,29 +49,16 @@ public class PatientController {
     }
 
     @PostMapping()
-    public String reservedVisit(long id, User auth){
-        Optional<Visit> visit = visitService.findById(id);
-        if(visit.isPresent()){
-            if (visit.get().isNotReserved()){
-                Visit reservedvisit = visitService.addUserToVisit(auth,id);
-            }else{
-                throw new IllegalArgumentException("Visit is reserved");
-            }
-        }
+    public String reservedVisit(@AuthenticationPrincipal UserDetails userDetails, long id){
+        User patient = userService.exist(userDetails);
+        visitService.addUserToVisit(patient,id);
         return "/profile/{id}";
     }
 
     @PostMapping()
-    public String deletedVisit(long id, User auth){
-        Optional<Visit> visit = visitService.findById(id);
-        if(visit.isPresent()){
-            if (visit.get().isNotReserved()){
-                throw new IllegalArgumentException("Visit is not reserved");
-
-            }else{
-                Visit deleteVisit = visitService.deleteUserFromVisit(id, auth);
-            }
-        }
+    public String deletedVisit(@AuthenticationPrincipal UserDetails userDetails,long id){
+        User auth = userService.exist(userDetails);
+        visitService.deleteUserFromVisit(auth, id);
         return "/profile/{id}";
     }
 }

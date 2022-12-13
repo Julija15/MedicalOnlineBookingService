@@ -5,6 +5,8 @@ import com.example.medicalonlinebookingservice.entity.UserData;
 import com.example.medicalonlinebookingservice.entity.Visit;
 import com.example.medicalonlinebookingservice.repository.UserDataRepository;
 import com.example.medicalonlinebookingservice.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -24,11 +26,14 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
     private final UserDataRepository userDataRepository;
+    @Autowired
+    private  UserService userService;
     private User user;
 
-    public UserService(UserRepository userRepository, UserDataRepository userDataRepository) {
+    public UserService(UserRepository userRepository, UserDataRepository userDataRepository, UserService userService) {
         this.userRepository = userRepository;
         this.userDataRepository = userDataRepository;
+        this.userService = userService;
     }
 
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -37,6 +42,16 @@ public class UserService implements UserDetailsService {
             return byUsername.get();
         } else {
             throw new UsernameNotFoundException(username);
+        }
+    }
+
+    public User exist (UserDetails userDetails) throws UsernameNotFoundException{
+        User user = userService.loadUserByUsername(userDetails.getUsername());{
+            if (user.getPassword().equals(userDetails.getPassword())){
+                return user;
+            }else {
+                throw new IllegalArgumentException("User not found");
+            }
         }
     }
 
