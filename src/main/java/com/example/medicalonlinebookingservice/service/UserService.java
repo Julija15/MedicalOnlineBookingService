@@ -1,14 +1,15 @@
 package com.example.medicalonlinebookingservice.service;
 
+import com.example.medicalonlinebookingservice.dto.UserRegistration;
 import com.example.medicalonlinebookingservice.entity.User;
 import com.example.medicalonlinebookingservice.entity.UserData;
 import com.example.medicalonlinebookingservice.entity.Visit;
 import com.example.medicalonlinebookingservice.repository.UserDataRepository;
 import com.example.medicalonlinebookingservice.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.example.medicalonlinebookingservice.entity.enums.Role.DOCTOR;
+import static com.example.medicalonlinebookingservice.entity.enums.Role.PATIENT;
 
 @Service
 @Transactional
@@ -26,14 +28,10 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
     private final UserDataRepository userDataRepository;
-    @Autowired
-    private  UserService userService;
-    private User user;
 
-    public UserService(UserRepository userRepository, UserDataRepository userDataRepository, UserService userService) {
+    public UserService(UserRepository userRepository, UserDataRepository userDataRepository) {
         this.userRepository = userRepository;
         this.userDataRepository = userDataRepository;
-        this.userService = userService;
     }
 
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -46,7 +44,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User exist (UserDetails userDetails) throws UsernameNotFoundException{
-        User user = userService.loadUserByUsername(userDetails.getUsername());{
+        User user = loadUserByUsername(userDetails.getUsername());{
             if (user.getPassword().equals(userDetails.getPassword())){
                 return user;
             }else {
@@ -79,7 +77,7 @@ public class UserService implements UserDetailsService {
             user.setName(changedUser.getName() != null ? changedUser.getName() : user.getName());
             user.setPhoneNumber(changedUser.getPhoneNumber() != null ? changedUser.getPhoneNumber() : user.getPhoneNumber());
             user.setSpecialist(changedUser.getSpecialist() != null ? changedUser.getSpecialist() : user.getSpecialist());
-            user.setSpecialist(changedUser.getSpecialist() != null ? changedUser.getSpecialist() : user.getSpecialist());
+            user.setRole(changedUser.getRole() != null ? changedUser.getRole() : user.getRole());
         }
       return user;
     }
@@ -101,5 +99,23 @@ public class UserService implements UserDetailsService {
         return userRepository.findAllByRole(DOCTOR.name());
     }
 
+    public User creatUser(UserRegistration userRegistration) {
+        User user = new User();
+        user.setName(userRegistration.getName());
+        user.setUsername(userRegistration.getUsername());
+        user.setPassword(new BCryptPasswordEncoder(12).encode(userRegistration.getPassword()));
+        user.setPhoneNumber(userRegistration.getPhoneNumber());
+        user.setCreatedAt(LocalDate.now());
+        user.setRole(PATIENT);
+        UserData userData =new UserData();
+        userData.setCity(userData.getCity());
+        userData.setStreet(userData.getStreet());
+        userData.setFlat(userData.getFlat());
+        userData.setDateOfBirth(userData.getDateOfBirth());
+        userData.setHouse(userData.getHouse());
+        userData.setGender(userData.getGender());
+        user.setUserData(userData);
+        return user;
+    }
 }
 

@@ -31,10 +31,9 @@ public class DoctorController {
     }
 
     @GetMapping()
-    public String showAllVisit(@AuthenticationPrincipal UserDetails userDetails, DoctorRequest doctorRequest, long id, Model model){
-        User doctor = userService.exist(userDetails);
-        doctor = userService.findUserById(id);
-        List<Visit> visitList = visitService.findVisitsByDoctor(id,doctorRequest.getDate());
+    public String showAllVisit(@AuthenticationPrincipal UserDetails userDetails, DoctorRequest doctorRequest, Model model){
+        User doctor = userService.loadUserByUsername(userDetails.getUsername());
+        List<Visit> visitList = visitService.findReservedVisits(doctor, doctorRequest.getDate());
         model.addAttribute("visitList",visitList);
         return "/";
     }

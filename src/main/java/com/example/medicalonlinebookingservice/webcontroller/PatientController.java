@@ -31,15 +31,15 @@ public class PatientController {
         this.visitService = visitService;
     }
 
-    @GetMapping()
-    public String showAllDoctor(User doctor, Model model){
-        List<User> doctors = userService.findAllDoctors();
-        model.addAttribute("doctors",doctors);
-        return "/";
-    }
+//    @GetMapping()
+//    public String showAllDoctors(User doctor, Model model){
+//        List<User> doctors = userService.findAllDoctors();
+//        model.addAttribute("doctors",doctors);
+//        return "/";
+//    }
 
     @GetMapping()
-    public String showAllDoctorVisit(PatientRequest patientRequest, Model model){
+    public String findVisits(PatientRequest patientRequest, Model model){
         if(patientRequest == null){
             throw new IllegalArgumentException("UserRequest is empty");
         }
@@ -48,12 +48,18 @@ public class PatientController {
         return "/";
     }
 
-    @PostMapping()
-    public String reservedVisit(@AuthenticationPrincipal UserDetails userDetails, long id){
-        User patient = userService.exist(userDetails);
+    @GetMapping()
+    public String reservedVisit(@AuthenticationPrincipal UserDetails userDetails, long id, Model model){
+        User patient = userService.loadUserByUsername(userDetails.getUsername());
         visitService.addUserToVisit(patient,id);
+        model.addAttribute("success", "visit is reserved");
         return "/profile/{id}";
     }
+
+//    @GetMapping()
+//    public String showPatientVisits(){
+//        return "" ;
+//    }
 
     @PostMapping()
     public String deletedVisit(@AuthenticationPrincipal UserDetails userDetails,long id){

@@ -14,10 +14,8 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     List<User> findAllByRole(String role);
 
-    List<Optional<User>> findAllBySpecialist(String specialist);
+    List<User> findAllBySpecialist(String specialist);
 
 
-    Optional<User> findById(User id);
 
-    void delete(Visit visit);
 }

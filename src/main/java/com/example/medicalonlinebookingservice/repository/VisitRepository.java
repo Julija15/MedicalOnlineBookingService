@@ -10,6 +10,6 @@ import java.util.Optional;
 
 public interface VisitRepository extends JpaRepository<Visit,Long> {
 
-    List<Visit> findAllByDoctorAndDate(Optional<User> doctor, LocalDate date);
+    List<Visit> findAllByDoctorAndDate(User doctor, LocalDate date);
 
 }

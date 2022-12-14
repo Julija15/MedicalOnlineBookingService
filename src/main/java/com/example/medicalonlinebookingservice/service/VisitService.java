@@ -22,21 +22,21 @@ public class VisitService {
     private VisitRepository visitRepository;
     private UserRepository userRepository;
 
-    public VisitService(VisitRepository visitRepository, UserRepository userRepository,UserService userService) {
+    public VisitService(VisitRepository visitRepository, UserRepository userRepository, UserService userService) {
         this.visitRepository = visitRepository;
         this.userRepository = userRepository;
         this.userService = userService;
     }
 
 
-    public List<Visit> findFreeVisits(Specialist specialist, LocalDate date){
-        if(specialist == null || date == null){
+    public List<Visit> findFreeVisits(Specialist specialist, LocalDate date) {
+        if (specialist == null || date == null) {
             throw new IllegalArgumentException("Bad Request, specialist or date is empty");
         }
-       List<Optional<User>> doctors = userRepository.findAllBySpecialist(specialist.name());
-       List<Visit> visits = new ArrayList<>();
-        for (Optional<User> doctor : doctors) {
-            List<Visit> doctorVisits = visitRepository.findAllByDoctorAndDate(doctor,date).stream().filter(Visit::isNotReserved).collect(Collectors.toList());
+        List<User> doctors = userRepository.findAllBySpecialist(specialist.name());
+        List<Visit> visits = new ArrayList<>();
+        for (User doctor : doctors) {
+            List<Visit> doctorVisits = visitRepository.findAllByDoctorAndDate(doctor, date).stream().filter(Visit::isNotReserved).collect(Collectors.toList());
             visits.addAll(doctorVisits);
         }
         return visits;
@@ -47,48 +47,42 @@ public class VisitService {
         return visitRepository.findById(id);
     }
 
-    public void  addUserToVisit(User patient, long id ) {
-       Optional<Visit> visitDB = visitRepository.findById(id);
-       if(visitDB.isEmpty()) {
-           Visit visit = visitDB.get();
-           if(visit.isNotReserved()){
-               visit.setPatient(patient);
-               patient.getVisitList().add(visit);
-               userRepository.save(patient);
-           }else {
-               throw new IllegalArgumentException("Visit is reserved");
-           }
-       }else {
-           throw new IllegalArgumentException("Visit is not found");
-       }
-    }
-
-    public void  deleteUserFromVisit(User patient,long id) {
-        Optional<Visit> visitDB = visitRepository.findById(id);
-        if(visitDB.isEmpty()) {
+    public void addUserToVisit(User patient, long visitId) {
+        Optional<Visit> visitDB = visitRepository.findById(visitId);
+        if (visitDB.isPresent()) {
             Visit visit = visitDB.get();
-            if(visit.isReserved()){
-                userRepository.delete(visit);
+            if (visit.isNotReserved()) {
+                visit.setPatient(patient);
+                patient.getVisitList().add(visit);
                 userRepository.save(patient);
             } else {
                 throw new IllegalArgumentException("Visit is reserved");
             }
-        }else {
+        } else {
             throw new IllegalArgumentException("Visit is not found");
         }
     }
 
+    public void deleteUserFromVisit(User patient, long visitId) {
+        Optional<Visit> visitDB = visitRepository.findById(visitId);
+        if (visitDB.isPresent()) {
+            Visit visit = visitDB.get();
+            if (visit.getPatient() != null && visit.getPatient().getId() == patient.getId()) {
+                visit.setPatient(null);
+                visitRepository.save(visit);
+            } else {
+                throw new IllegalArgumentException("Visit is reserved");
+            }
+        } else {
+            throw new IllegalArgumentException("Visit is not found");
+        }
+    }
 
-    public List<Visit> findVisitsByDoctor(Long id, LocalDate date) {
-        if( date == null){
+    public List<Visit> findReservedVisits(User doctor, LocalDate date) {
+        if (date == null) {
             throw new IllegalArgumentException("Bad Request, date is empty");
         }
-        Optional<User> doctor = userRepository.findById(id);
-        List<Visit> visits = new ArrayList<>();
-        for (Visit visit : visits) {
-            List<Visit> doctorVisits = visitRepository.findAllByDoctorAndDate(doctor,date).stream().filter(Visit::isReserved).collect(Collectors.<Visit>toList());
-            visits.addAll(doctorVisits);
-        }
-        return visits;
+        List<Visit> visits = visitRepository.findAllByDoctorAndDate(doctor, date);
+        return visits.stream().filter(Visit::isReserved).collect(Collectors.toList());
     }
 }

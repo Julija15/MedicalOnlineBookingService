@@ -35,9 +35,9 @@ public class AdminController {
         model.addAttribute("doctors", doctorList);
         return " /admin";
     }
-
+//как мпередавать localDate
     @PostMapping("admin/doctor/{id}")
-    public String creatTimeTable(@PathVariable Long id,@PathVariable LocalDate localDate, Model model) {
+    public String creatTimeTable(@PathVariable Long id, LocalDate localDate, Model model) {
         User doctor = userService.findUserById(id);
         userService.creatTimeTable(doctor, localDate);
         model.addAttribute("doctor", doctor);
