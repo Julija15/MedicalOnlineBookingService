@@ -17,7 +17,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/profile")
+@RequestMapping("/profile/patient")
 public class PatientController {
 
 
@@ -31,12 +31,12 @@ public class PatientController {
         this.visitService = visitService;
     }
 
-//    @GetMapping()
-//    public String showAllDoctors(User doctor, Model model){
-//        List<User> doctors = userService.findAllDoctors();
-//        model.addAttribute("doctors",doctors);
-//        return "/";
-//    }
+    @GetMapping()
+    public String showAllDoctors(User doctor, Model model){
+        List<User> doctors = userService.findAllDoctors();
+        model.addAttribute("doctors",doctors);
+        return "/";
+    }
 
     @GetMapping()
     public String findVisits(PatientRequest patientRequest, Model model){
@@ -56,10 +56,12 @@ public class PatientController {
         return "/profile/{id}";
     }
 
-//    @GetMapping()
-//    public String showPatientVisits(){
-//        return "" ;
-//    }
+    @GetMapping()
+    public String showPatientVisits(@AuthenticationPrincipal UserDetails userDetails, Model model){
+        User patient = userService.loadUserByUsername(userDetails.getUsername());
+        List<Visit> visits = visitService.findAll(patient);
+        return "/patient/visits" ;
+    }
 
     @PostMapping()
     public String deletedVisit(@AuthenticationPrincipal UserDetails userDetails,long id){

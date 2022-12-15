@@ -17,7 +17,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/profile")
+@RequestMapping("/profile/admin")
 public class AdminController {
 
     @Autowired
@@ -29,28 +29,28 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @GetMapping("/admin")
+    @GetMapping("/")
     public String getAdminPage(Model model, @AuthenticationPrincipal UserDetails authUser) {
         List<User> doctorList = userService.findAllDoctors();
         model.addAttribute("doctors", doctorList);
-        return " /admin";
+        return " /";
     }
 //как мпередавать localDate
-    @PostMapping("admin/doctor/{id}")
+    @PostMapping("/doctor/{id}")
     public String creatTimeTable(@PathVariable Long id, LocalDate localDate, Model model) {
         User doctor = userService.findUserById(id);
         userService.creatTimeTable(doctor, localDate);
         model.addAttribute("doctor", doctor);
         model.addAttribute("localDate",localDate);
-        return "/admin/doctor/{id}";
+        return "/doctor/{id}";
     }
 
 
-    @PutMapping("/admin/user/{id}")
+    @PutMapping("/user/{id}")
     public String updateUser(@PathVariable Long id, User user, Model model){
         User userDB = userService.findUserById(id);
         userService.update(userDB,user);
         userService.save(userDB);
-        return "/admin/user/{id}";
+        return "/user/{id}";
     }
 }

@@ -3,9 +3,8 @@ package com.example.medicalonlinebookingservice.entity;
 import com.example.medicalonlinebookingservice.entity.enums.Role;
 import com.example.medicalonlinebookingservice.entity.enums.Specialist;
 import com.example.medicalonlinebookingservice.entity.enums.Status;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,6 +16,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -26,6 +26,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -56,10 +57,10 @@ public class User implements UserDetails {
     private LocalDate createdAt;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<Visit> visitList;
 
     @OneToOne
-    @JoinColumn(name = "user_daten_id")
     private UserData userData;
 
     @Enumerated(EnumType.STRING)
@@ -109,4 +110,9 @@ public class User implements UserDetails {
         return role;
     }
 
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

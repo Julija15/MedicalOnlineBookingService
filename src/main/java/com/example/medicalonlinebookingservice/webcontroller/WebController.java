@@ -3,11 +3,9 @@ package com.example.medicalonlinebookingservice.webcontroller;
 
 import com.example.medicalonlinebookingservice.dto.UserRegistration;
 import com.example.medicalonlinebookingservice.entity.User;
-import com.example.medicalonlinebookingservice.entity.UserData;
 import com.example.medicalonlinebookingservice.entity.enums.Role;
 import com.example.medicalonlinebookingservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -67,9 +65,10 @@ public class WebController {
             if (userDB.getRole() == Role.ADMIN) {
                 List<User> doctorList = userService.findAllDoctors();
                 model.addAttribute("doctors", doctorList);
-                return " /admin";
+                return " /page/admin";
             }
             if (userDB.getRole() == Role.DOCTOR) {
+
             }
         } else {
             model.addAttribute("error", "Incorrect username or password");

@@ -42,11 +42,6 @@ public class VisitService {
         return visits;
     }
 
-
-    public Optional<Visit> findById(long id) {
-        return visitRepository.findById(id);
-    }
-
     public void addUserToVisit(User patient, long visitId) {
         Optional<Visit> visitDB = visitRepository.findById(visitId);
         if (visitDB.isPresent()) {
@@ -84,5 +79,10 @@ public class VisitService {
         }
         List<Visit> visits = visitRepository.findAllByDoctorAndDate(doctor, date);
         return visits.stream().filter(Visit::isReserved).collect(Collectors.toList());
+    }
+
+
+    public List<Visit> findAll(User patient) {
+      return visitRepository.findAll(patient);
     }
 }
