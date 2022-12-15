@@ -5,7 +5,6 @@ import com.example.medicalonlinebookingservice.entity.Visit;
 import com.example.medicalonlinebookingservice.entity.enums.Specialist;
 import com.example.medicalonlinebookingservice.repository.UserRepository;
 import com.example.medicalonlinebookingservice.repository.VisitRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,16 +15,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class VisitService {
-    @Autowired
-    private UserService userService;
-
     private VisitRepository visitRepository;
     private UserRepository userRepository;
 
-    public VisitService(VisitRepository visitRepository, UserRepository userRepository, UserService userService) {
+    public VisitService(VisitRepository visitRepository, UserRepository userRepository) {
         this.visitRepository = visitRepository;
         this.userRepository = userRepository;
-        this.userService = userService;
     }
 
 
@@ -82,7 +77,8 @@ public class VisitService {
     }
 
 
-    public List<Visit> findAll(User patient) {
-      return visitRepository.findAll(patient);
+    public List<Visit> findAllVisitByPatient(User patient) {
+        List<Visit> visits = visitRepository.findAllByPatient(patient);
+        return visits.stream().filter(Visit::isReserved).collect(Collectors.toList());
     }
 }

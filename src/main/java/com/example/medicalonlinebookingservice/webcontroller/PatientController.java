@@ -31,14 +31,14 @@ public class PatientController {
         this.visitService = visitService;
     }
 
-    @GetMapping()
-    public String showAllDoctors(User doctor, Model model){
+    @GetMapping("/")
+    public String showAllDoctors(Model model){
         List<User> doctors = userService.findAllDoctors();
         model.addAttribute("doctors",doctors);
         return "/";
     }
 
-    @GetMapping()
+    @GetMapping("/")
     public String findVisits(PatientRequest patientRequest, Model model){
         if(patientRequest == null){
             throw new IllegalArgumentException("UserRequest is empty");
@@ -48,24 +48,23 @@ public class PatientController {
         return "/";
     }
 
-    @GetMapping()
-    public String reservedVisit(@AuthenticationPrincipal UserDetails userDetails, long id, Model model){
-        User patient = userService.loadUserByUsername(userDetails.getUsername());
-        visitService.addUserToVisit(patient,id);
+    @GetMapping("/")
+    public String reservedVisit(User patient, long visitId, Model model){
+        visitService.addUserToVisit(patient,visitId);
         model.addAttribute("success", "visit is reserved");
-        return "/profile/{id}";
+        return "/{id}";
     }
 
     @GetMapping()
-    public String showPatientVisits(@AuthenticationPrincipal UserDetails userDetails, Model model){
-        User patient = userService.loadUserByUsername(userDetails.getUsername());
-        List<Visit> visits = visitService.findAll(patient);
+    public String showPatientVisits(User patient, Model model){
+        List<Visit> visits = visitService. findAllVisitByPatient(patient);
+        model.addAttribute("PatientVisits", visits);
         return "/patient/visits" ;
     }
 
     @PostMapping()
-    public String deletedVisit(@AuthenticationPrincipal UserDetails userDetails,long id){
-        User auth = userService.exist(userDetails);
+    public String deletedVisit(User patient,long id){
+        User auth = userService.exist(patient);
         visitService.deleteUserFromVisit(auth, id);
         return "/profile/{id}";
     }
