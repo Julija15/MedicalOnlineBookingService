@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div class="p-3 bg-image" style="
+        background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
+        height: 80px;
+        "></div>
+
+<div th:insert="/includes/head::head"></div>
+
+<body>
+
+<div class="text"
+     th:if="${auth.getUser().getRole == T(com.example.medicalonlinebookingservice.entity.enums.Role).ADMIN}">
+    <h2> Admin: [[${"authUser.getUser().getFirstname}]] ([[${"authUser.getUser().getLastname}]])</h2>
+</div>
+
+<div class="top">
+    <a href="/medicalonlinebookingservice/index">Home Page</a>
+    <a href="/medicalonlinebookingservice/logout">Logout</a>
+    <a href="/medicalonlinebookingservice/updateUser">Update user</a>
+</div>
+<br>
+<form th:action="@{/page/admin}" th:object="${doctor}" method="post">
+  <div  class="signin-content">
+    <div>
+        <label>Select a doctor and creat visit:</label>
+        <div th:each="doctor: ${doctors}">
+            <input type="radio" name="doctors" th:value="${doctorStat.index}"/>
+            <label th:text="${doctorStat.first} ${doctorStat.last}"></label>
+            <br>
+        </div>
+    </div>
+  </div>
+</form>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+</body>
+</html>

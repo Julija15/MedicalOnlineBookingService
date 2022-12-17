@@ -40,17 +40,9 @@ public class UserData extends AbstractEntity {
     private User user;
 
 
-  //  @Column(name = "date_of_birth")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull
-    @Setter
-    @Getter
-    private LocalDate dateOfBirth;
 
-    @Setter
-    @Getter
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+
+
 
     public User getUser() {
         return user;

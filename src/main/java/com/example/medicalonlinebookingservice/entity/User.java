@@ -1,22 +1,16 @@
 package com.example.medicalonlinebookingservice.entity;
 
+import com.example.medicalonlinebookingservice.entity.enums.Gender;
 import com.example.medicalonlinebookingservice.entity.enums.Role;
 import com.example.medicalonlinebookingservice.entity.enums.Specialist;
 import com.example.medicalonlinebookingservice.entity.enums.Status;
 import lombok.*;
-import org.hibernate.Hibernate;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 
@@ -25,7 +19,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements UserDetails {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +27,11 @@ public class User implements UserDetails {
 
     @Size(message = "Store name length must be 2 - 16", min = 2, max = 16)
     @NotBlank(message = "Field must not be empty")
-    private String name;
+    private String firstname;
+
+    @Size(message = "Store name length must be 2 - 16", min = 2, max = 16)
+    @NotBlank(message = "Field must not be empty")
+    private String lastname;
 
     @Size(message = "Store name length must be 2 - 16", min = 2, max = 16)
     @NotBlank(message = "Field must not be empty")
@@ -53,6 +51,12 @@ public class User implements UserDetails {
     @Column(name = "phone_number", unique = true)
     private String phoneNumber;
 
+    @NotNull
+    @Setter
+    @Getter
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateOfBirth;
+
     @Column(name = "created_at")
     private LocalDate createdAt;
 
@@ -69,6 +73,11 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Setter
+    @Getter
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
     public void setRole(Role role) {
         this.role = role;
     }
@@ -81,38 +90,4 @@ public class User implements UserDetails {
         this.status = status;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Set.of(this.role);
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    public Role getRole(){
-        return role;
-    }
-
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

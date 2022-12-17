@@ -4,12 +4,7 @@ import com.example.medicalonlinebookingservice.dto.UserRegistration;
 import com.example.medicalonlinebookingservice.entity.User;
 import com.example.medicalonlinebookingservice.entity.UserData;
 import com.example.medicalonlinebookingservice.entity.Visit;
-import com.example.medicalonlinebookingservice.repository.UserDataRepository;
 import com.example.medicalonlinebookingservice.repository.UserRepository;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +12,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 
@@ -26,32 +20,32 @@ import static com.example.medicalonlinebookingservice.entity.enums.Role.PATIENT;
 
 @Service
 @Transactional
-public class UserService implements UserDetailsService {
+public class UserService {
 
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
-    private final UserDataRepository userDataRepository;
+
 
     private static final Logger log = Logger.getLogger(UserService.class.getName());
 
-    public UserService(UserRepository userRepository, UserDataRepository userDataRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.userDataRepository = userDataRepository;
+
     }
 
-    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) {
         Optional<User> byUsername = userRepository.findByUsername(username);
         if (byUsername.isPresent()) {
             return byUsername.get();
         } else {
-            throw new UsernameNotFoundException(username);
+            throw new IllegalArgumentException("User is not found");
         }
     }
 
-    public User exist(UserDetails userDetails) throws UsernameNotFoundException {
-        User user = loadUserByUsername(userDetails.getUsername());
+    public User exist(User user)  {
+       User  userDB = loadUserByUsername(user.getUsername());
         {
-            if (user.getPassword().equals(userDetails.getPassword())) {
+            if (userDB.getPassword().equals(user.getPassword())) {
                 return user;
             } else {
                 throw new IllegalArgumentException("User not found");
@@ -77,7 +71,8 @@ public class UserService implements UserDetailsService {
     public User update(User user, User changedUser) {
         if (changedUser != null) {
             user.setEmail(changedUser.getEmail() != null ? changedUser.getEmail() : user.getEmail());
-            user.setName(changedUser.getName() != null ? changedUser.getName() : user.getName());
+            user.setFirstname(changedUser.getFirstname() != null ? changedUser.getFirstname() : user.getFirstname());
+            user.setLastname(changedUser.getLastname() != null ? changedUser.getLastname() : user.getLastname());
             user.setPhoneNumber(changedUser.getPhoneNumber() != null ? changedUser.getPhoneNumber() : user.getPhoneNumber());
             user.setSpecialist(changedUser.getSpecialist() != null ? changedUser.getSpecialist() : user.getSpecialist());
             user.setRole(changedUser.getRole() != null ? changedUser.getRole() : user.getRole());
@@ -105,19 +100,20 @@ public class UserService implements UserDetailsService {
 
     public User creatUser(UserRegistration userRegistration) {
         User user = new User();
-        user.setName(userRegistration.getName());
+        user.setFirstname(userRegistration.getFirstname());
+        user.setLastname(userRegistration.getLastname());
         user.setUsername(userRegistration.getUsername());
-        user.setPassword(new BCryptPasswordEncoder(12).encode(userRegistration.getPassword()));
+        user.setPassword(userRegistration.getPassword());
         user.setPhoneNumber(userRegistration.getPhoneNumber());
+        user.setGender(user.getGender());
+        user.setDateOfBirth(userRegistration.getDateOfBirth());
         user.setCreatedAt(LocalDate.now());
         user.setRole(PATIENT);
         UserData userData = new UserData();
         userData.setCity(userData.getCity());
         userData.setStreet(userData.getStreet());
         userData.setFlat(userData.getFlat());
-        userData.setDateOfBirth(userData.getDateOfBirth());
         userData.setHouse(userData.getHouse());
-        userData.setGender(userData.getGender());
         user.setUserData(userData);
         log.info("IN creatUser - user with id: {} successfully creat");
         return user;

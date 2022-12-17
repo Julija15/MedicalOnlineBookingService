@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="p-5 bg-image" style="
+        background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
+        height: 80px;
+        "></div>
+<head>
+    <meta charset="UTF-8">
+    <title>Update user</title>
+</head>
+<body>
+<div class="top">
+    <a href="/medicalonlinebookingservice/index">Start Page</a>
+    <a href="/medicalonlinebookingservice/profile/admin">Admin hom page</a>
+    <a href="/medicalonlinebookingservice/logout">Logout</a>
+</div>
+
+<div class="container">
+    <div th:replace="/includes/header"></div>
+
+    <div th:replace="/includes/nav"></div>
+
+    <div class="registration-content">
+
+        <div class="user-inf-add">
+
+            <form th:method="POST" th:action="@{/admin/updateUser}" th:object="${user}">
+                <h3 class="form-signin-heading"> Update user: </h3>
+                <input type="hidden" name="_method" value="PUT">
+                <input type="hidden" th:field="*{user.getId}" id="user.getId"/>
+                <p th:text="${user.getFirstname}"> Firstname </p>
+                <p th:text="${user.getLastname}"> Lastname </p>
+                <br/>
+                <label for="Firstname">Firstname: </label>
+                <input type="text" th:field="*{user.setFirstname(userRegistration.getFirstname())}" id="firstname"/>
+                <br/>
+                <br/>
+                <label for="Lastname">Lastname: </label>
+                <input type="text" th:field="*{user.setLastname(userRegistration.getLastname())}" id="lastname"/>
+                <br/>
+                <br/>
+                <label for="dateOfBirth">Date of Birth: </label>
+                <input type="date" th:field="*{user.setDateOfBirth(userRegistration.getDateOfBirth())}" id="dateOfBirth"/>
+                <br/>
+                <br/>
+                <label for="phoneNumber">Number phone: </label>
+                <input type="text" th:field="*{user.setPhoneNumber(userRegistration.getPhoneNumber())}" id="phoneNumber"/>
+                <br/>
+                <br/>
+
+                <div style="clear:both; padding:8px; text-align:left">
+                    <input type="text" th:field="*{ user.setGender()}" id="gender"/>
+                    <label for="gender-select" style="float:left">Sex: </label>
+                    <select name="gender" id="gender-select">
+                        <option  th:value="${T(com.example.medicalonlinebookingservice.entity.enums.Gender).FEMALE}" th:text="FEMALE"></option>
+                        <option  th:value="${T(com.example.medicalonlinebookingservice.entity.enums.Gender).MALE}" th:text="MALE"></option>
+                    </select>
+                </div>
+                <br/>
+                <br/>
+                <label for="city">City: </label>
+                <input type="text" th:field="*{userData.setCity(userData.getCity())}" id="city"/>
+                <br/>
+                <br/>
+                <label for="street">Street: </label>
+                <input type="text" th:field="*{userData.setStreet(userData.getStreet())}" id="street"/>
+                <br/>
+                <br/>
+                <label for="flat">Flat: </label>
+                <input type="text" th:field="*{userData.setFlat(userData.getFlat())}" id="flat"/>
+                <br/>
+                <br/>
+                <label for="house">House: </label>
+                <input type="text" th:field="*{userData.setHouse(userData.getHouse())}" id="house"/>
+                <br/>
+                <br/>
+                <div style="clear:both; padding:8px; text-align:left">
+                <label for="role">Role: </label>
+                    <input type="text" th:field="*{ user.setRole()}" id="role"/>
+                <select name="role" id="role-select">
+                    <option th:value="${T(com.example.medicalonlinebookingservice.entity.enums.Role).ADMIN}" th:text="FEMALE"></option>
+                    <option th:value="${T(com.example.medicalonlinebookingservice.entity.enums.Role).DOCTOR}" th:text="MALE"></option>
+                    <option th:value="${T(com.example.medicalonlinebookingservice.entity.enums.Role).PATIENT}" th:text="MALE"></option>
+                </select>
+                </div>
+
+
+                <br/>
+                <br/>
+                <input type="submit" value="Update"/>
+            </form>
+    </div>
+</div>
+    <br/>
+        <form th:method="GET" th:action="@{/logout}">
+            <input type="submit" value="Logout"/>
+        </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,16 +1,11 @@
 package com.example.medicalonlinebookingservice.webcontroller;
 
 import com.example.medicalonlinebookingservice.entity.User;
-import com.example.medicalonlinebookingservice.entity.enums.Role;
-import com.example.medicalonlinebookingservice.entity.enums.Specialist;
 import com.example.medicalonlinebookingservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,34 +18,36 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
-    private Specialist specialist;
 
     public AdminController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/")
-    public String getAdminPage(Model model, @AuthenticationPrincipal UserDetails authUser) {
+    public String getAdminPage(User authUser, Model model) {
         List<User> doctorList = userService.findAllDoctors();
         model.addAttribute("doctors", doctorList);
-        return " /";
+        model.addAttribute("authUser",authUser);
+        return " /creatTimeTable";
     }
-//как мпередавать localDate
-    @PostMapping("/doctor/{id}")
+    @PostMapping("/creatTimeTable")
     public String creatTimeTable(@PathVariable Long id, LocalDate localDate, Model model) {
         User doctor = userService.findUserById(id);
         userService.creatTimeTable(doctor, localDate);
         model.addAttribute("doctor", doctor);
         model.addAttribute("localDate",localDate);
-        return "/doctor/{id}";
+        return "/creatTimeTable}";
     }
 
-
-    @PutMapping("/user/{id}")
+    @PutMapping("/updateUser")
     public String updateUser(@PathVariable Long id, User user, Model model){
         User userDB = userService.findUserById(id);
         userService.update(userDB,user);
         userService.save(userDB);
+        model.addAttribute("firstname",user.getFirstname());
+        model.addAttribute("lastname",user.getLastname());
+        model.addAttribute("userDB",userDB);
+        model.addAttribute("message","User is update");
         return "/user/{id}";
     }
 }
