@@ -1,20 +1,17 @@
 package com.example.medicalonlinebookingservice.entity;
 
-import com.example.medicalonlinebookingservice.entity.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class UserData extends AbstractEntity {
+
     @Setter
     @Getter
     @NotEmpty
@@ -35,14 +32,9 @@ public class UserData extends AbstractEntity {
     @NotEmpty
     private String flat;
 
-
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+   // @JoinColumn(name = "id", referencedColumnName = "user_id")
     private User user;
-
-
-
-
-
 
     public User getUser() {
         return user;

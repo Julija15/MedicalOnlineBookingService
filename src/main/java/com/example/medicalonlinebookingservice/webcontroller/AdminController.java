@@ -1,12 +1,14 @@
 package com.example.medicalonlinebookingservice.webcontroller;
 
+import com.example.medicalonlinebookingservice.dto.DoctorRequest;
 import com.example.medicalonlinebookingservice.entity.User;
 import com.example.medicalonlinebookingservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.time.LocalDate;
+
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 
@@ -23,20 +25,19 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
-    public String getAdminPage(User authUser, Model model) {
+    @GetMapping
+    public String getAdminPage(HttpSession session, Model model) {
         List<User> doctorList = userService.findAllDoctors();
         model.addAttribute("doctors", doctorList);
-        model.addAttribute("authUser",authUser);
-        return " /creatTimeTable";
+        return "/profile/admin/admin";
     }
-    @PostMapping("/creatTimeTable")
-    public String creatTimeTable(@PathVariable Long id, LocalDate localDate, Model model) {
-        User doctor = userService.findUserById(id);
-        userService.creatTimeTable(doctor, localDate);
+    @PostMapping("/createTimeTable")
+    public String creatTimeTable(@ModelAttribute ("doctorRequest") DoctorRequest doctorRequest, Model model, HttpSession session) {
+        User doctor = userService.findUserById(doctorRequest.getDoctorId());
+        userService.creatTimeTable(doctor, doctorRequest.getVisitsDate());
         model.addAttribute("doctor", doctor);
-        model.addAttribute("localDate",localDate);
-        return "/creatTimeTable}";
+        model.addAttribute("date",doctorRequest.getVisitsDate());
+        return "/profile/admin/admin";
     }
 
     @PutMapping("/updateUser")

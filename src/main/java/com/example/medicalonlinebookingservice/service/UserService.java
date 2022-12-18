@@ -42,6 +42,11 @@ public class UserService {
         }
     }
 
+    public User findUser(String username) {
+        Optional<User> byUsername = userRepository.findByUsername(username);
+        return byUsername.orElse(null);
+    }
+
     public User exist(User user)  {
        User  userDB = loadUserByUsername(user.getUsername());
         {
@@ -95,7 +100,7 @@ public class UserService {
     }
 
     public List<User> findAllDoctors() {
-        return userRepository.findAllByRole(DOCTOR.name());
+        return userRepository.findAllByRole(DOCTOR);
     }
 
     public User creatUser(UserRegistration userRegistration) {
@@ -105,16 +110,18 @@ public class UserService {
         user.setUsername(userRegistration.getUsername());
         user.setPassword(userRegistration.getPassword());
         user.setPhoneNumber(userRegistration.getPhoneNumber());
-        user.setGender(user.getGender());
+        user.setEmail(userRegistration.getEmail());
+        user.setGender(userRegistration.getGender());
         user.setDateOfBirth(userRegistration.getDateOfBirth());
         user.setCreatedAt(LocalDate.now());
         user.setRole(PATIENT);
         UserData userData = new UserData();
-        userData.setCity(userData.getCity());
-        userData.setStreet(userData.getStreet());
-        userData.setFlat(userData.getFlat());
-        userData.setHouse(userData.getHouse());
+        userData.setCity(userRegistration.getCity());
+        userData.setStreet(userRegistration.getStreet());
+        userData.setFlat(userRegistration.getFlat());
+        userData.setHouse(userRegistration.getHouse());
         user.setUserData(userData);
+        userData.setUser(user);
         log.info("IN creatUser - user with id: {} successfully creat");
         return user;
     }

@@ -6,32 +6,28 @@
         height: 80px;
         "></div>
 
-<div th:insert="/includes/head::head"></div>
-
 <body>
 
-<div class="text"
-     th:if="${auth.getUser().getRole == T(com.example.medicalonlinebookingservice.entity.enums.Role).ADMIN}">
-    <h2> Admin: [[${"authUser.getUser().getFirstname}]] ([[${"authUser.getUser().getLastname}]])</h2>
-</div>
+<!--<div class="text"-->
+<!--     th:if="${session.user.getRole == T(com.example.medicalonlinebookingservice.entity.enums.Role).ADMIN}">-->
+<!--    <h2> Admin: [[${session.user.getFirstname}]] ([[${"session.user.getLastname}]])</h2>-->
+<!--</div>-->
 
 <div class="top">
     <a href="/medicalonlinebookingservice/index">Home Page</a>
     <a href="/medicalonlinebookingservice/logout">Logout</a>
-    <a href="/medicalonlinebookingservice/updateUser">Update user</a>
+    <a href="/medicalonlinebookingservice/profile/admin/updateUser">Update user</a>
 </div>
 <br>
-<form th:action="@{/page/admin}" th:object="${doctor}" method="post">
-  <div  class="signin-content">
-    <div>
-        <label>Select a doctor and creat visit:</label>
-        <div th:each="doctor: ${doctors}">
-            <input type="radio" name="doctors" th:value="${doctorStat.index}"/>
-            <label th:text="${doctorStat.first} ${doctorStat.last}"></label>
-            <br>
-        </div>
+<form th:action="@{/profile/admin/createTimeTable}" method="post" th:object="${doctorRequest}">
+    <label>Select a doctor and creat visit:</label>
+    <div th:each="doctor: ${doctors}">
+        <input type="radio" name="doctorId" th:value="${doctor.id}"/>
+        <label th:text="${doctor.firstname} + ${doctor.lastname } + ${doctor.specialist.name()}"></label>
+        <br>
     </div>
-  </div>
+    <input type="date" name="visitsDate"/>
+    <button class="button" type="submit">Create visits</button>
 </form>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"

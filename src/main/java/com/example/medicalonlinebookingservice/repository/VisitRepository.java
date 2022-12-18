@@ -12,4 +12,6 @@ public interface VisitRepository extends JpaRepository<Visit,Long> {
     List<Visit> findAllByDoctorAndDate(User doctor, LocalDate date);
 
     List<Visit> findAllByPatient(User patient);
+
+    List<Visit> findAllByDoctor(User doctor);
 }

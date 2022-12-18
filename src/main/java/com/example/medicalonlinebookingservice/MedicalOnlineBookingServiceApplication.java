@@ -11,4 +11,5 @@ public class MedicalOnlineBookingServiceApplication {
         SpringApplication.run(MedicalOnlineBookingServiceApplication.class, args);
     }
 
+
 }

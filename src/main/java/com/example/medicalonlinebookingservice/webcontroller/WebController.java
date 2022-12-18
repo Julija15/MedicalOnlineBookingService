@@ -1,5 +1,6 @@
 package com.example.medicalonlinebookingservice.webcontroller;
 
+import com.example.medicalonlinebookingservice.dto.UserLogin;
 import com.example.medicalonlinebookingservice.dto.UserRegistration;
 import com.example.medicalonlinebookingservice.entity.User;
 import com.example.medicalonlinebookingservice.entity.enums.Role;
@@ -31,7 +32,7 @@ public class WebController {
     }
 
     @GetMapping("/index")
-    public String index(@ModelAttribute("authUser") User authUser) {
+    public String index() {;
         return "index";
     }
 
@@ -42,40 +43,47 @@ public class WebController {
 
     @PostMapping("/registration")
     public String registrationPage(@Valid @ModelAttribute("userRegistration") UserRegistration userRegistration, Model model, HttpSession httpSession) {
-        User userDB = userService.loadUserByUsername(userRegistration.getUsername());
+        User userDB = userService.findUser(userRegistration.getUsername());
         if (userDB == null) {
             User user = userService.creatUser(userRegistration);
             userService.save(user);
-            model.addAttribute("userRegistration", user);
+            model.addAttribute("userRegistration",new User());
         } else {
             model.addAttribute("error", "User exist");
-            return "redirect: /registration";
+            return "/registration";
         }
-        return "redirect: /login";
+        return "/login";
+    }
+
+    @GetMapping("/login")
+    public String login(HttpSession session) {
+        session.invalidate();
+        return "/login";
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("authUser") User authUser, BindingResult bindingResult,
-                        HttpSession httpSession, Model model) {
+    public String login(@Valid @ModelAttribute("userLogin") UserLogin userLogin, HttpSession httpSession, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()){
             return "login";
         }
-        User userDB = userService.loadUserByUsername(authUser.getUsername());
-        if (authUser.getPassword().equals(userDB.getPassword())) {
-            httpSession.setAttribute("authUser", userDB);
+        User userDB = userService.loadUserByUsername(userLogin.getUsername());
+        if (userLogin.getPassword().equals(userDB.getPassword())) {
+            userDB.setPassword(null);
+            httpSession.setAttribute("login",userLogin.getUsername());
+            httpSession.setAttribute("user", userDB);
             if (userDB.getRole() == Role.ADMIN) {
-                List<User> doctorList = userService.findAllDoctors();
-                model.addAttribute("doctors", doctorList);
-                return " /page/admin";
+//                List<User> doctorList = userService.findAllDoctors();
+//                model.addAttribute("doctors", doctorList);
+                return "redirect:/profile/admin";
             }
             if (userDB.getRole() == Role.DOCTOR) {
-                return "/page/doctor";
+                return "redirect:/profile/doctor";
             }
         } else {
             model.addAttribute("error", "Incorrect username or password");
             return "login";
         }
-        return "/profile/{id}";
+        return "/profile/patient/patient";
     }
 
     @GetMapping("/logout")

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,7 +29,7 @@ public class VisitService {
         if (specialist == null || date == null) {
             throw new IllegalArgumentException("Bad Request, specialist or date is empty");
         }
-        List<User> doctors = userRepository.findAllBySpecialist(specialist.name());
+        List<User> doctors = userRepository.findAllBySpecialist(specialist);
         List<Visit> visits = new ArrayList<>();
         for (User doctor : doctors) {
             List<Visit> doctorVisits = visitRepository.findAllByDoctorAndDate(doctor, date).stream().filter(Visit::isNotReserved).collect(Collectors.toList());
@@ -68,12 +69,12 @@ public class VisitService {
         }
     }
 
-    public List<Visit> findReservedVisits(User doctor, LocalDate date) {
-        if (date == null) {
-            throw new IllegalArgumentException("Bad Request, date is empty");
-        }
-        List<Visit> visits = visitRepository.findAllByDoctorAndDate(doctor, date);
-        return visits.stream().filter(Visit::isReserved).collect(Collectors.toList());
+    public List<Visit> findReservedVisits(User doctor) {
+        List<Visit> visits = visitRepository.findAllByDoctor(doctor);
+        return visits.stream()
+                .filter(Visit::isReserved)
+                .sorted(Comparator.comparing(Visit::getStartTime))
+                .collect(Collectors.toList());
     }
 
 

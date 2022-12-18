@@ -10,13 +10,14 @@
         background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
         height: 80px;
         "></div>
-<div th:insert="/includes::head"></div>
 
 <body>
 <form action="index.html" method="get">
 <div class="top">
-    <a th:if="${authUser == null}" href="/medicalonlinebookingservice/registration">Registration</a>
-    <a th:if="${authUser != null}" href="/medicalonlinebookingservice/login">Login</a>
+<!--    <a th:if="${session.getAttribut("login") != null}" href="/medicalonlinebookingservice/registration">Registration</a>-->
+<!--    <a th:if="${authUser != null}" href="/medicalonlinebookingservice/login">Login</a>-->
+    <a href="/medicalonlinebookingservice/registration">Registration</a>
+    <a  href="/medicalonlinebookingservice/login">Login</a>
 </div>
 <div class="container">
     <div class="header">

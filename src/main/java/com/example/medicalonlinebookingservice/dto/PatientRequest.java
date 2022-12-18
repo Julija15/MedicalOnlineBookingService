@@ -10,6 +10,14 @@ public class PatientRequest {
 
     private LocalDate date;
 
+    public PatientRequest() {
+    }
+
+    public PatientRequest(Specialist specialist, LocalDate date) {
+        this.specialist = specialist;
+        this.date = date;
+    }
+
     public Specialist getSpecialist() {
         return specialist;
     }

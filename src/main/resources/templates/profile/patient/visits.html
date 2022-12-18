@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <div class="p-5 bg-image" style="
         background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
@@ -20,20 +20,18 @@ html lang="en" xmlns:th="http://www.thymeleaf.org">
     <a href="/medicalonlinebookingservice/logout">Logout</a>
 </div>
 
-<div class="text"
-     th:if="${user.getRole() == T(com.example.medicalonlinebookingservice.entity.enums.Role).PATIENT}">
-    <h2> Patient: [[${user.name}]] ([[${user.getUser().getUsername()}]])</h2>
-</div>
+<form th:action="@{/profile/patient/reserveVisit}" method="post" th:object="${visit}">
+    <label>Select a visit:</label>
+    <div th:each="eachVisit: ${visits}">
+        <input type="radio" name="id" th:value="${eachVisit.id}"/>
+        <label th:text="${eachVisit.startTime}"></label>
+        <br>
+    </div>
+    <button class="button" type="submit">Reserve visit</button>
+</form>
 
-<div class="top">
-    <a href="/medicalonlinebookingservice/index">Home Page</a>
-    <a href="/medicalonlinebookingservice/logout">Logout</a>
-</div>
-
-<div class="container">
-
-    <form action="/medicalonlinebookingservice/doctor/{id}" class="form-signin" method="GET" th:object="visit">
-
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
 </body>
 </html>

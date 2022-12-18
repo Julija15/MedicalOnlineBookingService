@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.text.DateFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -19,11 +20,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class User extends AbstractEntity{
 
     @Size(message = "Store name length must be 2 - 16", min = 2, max = 16)
     @NotBlank(message = "Field must not be empty")
@@ -45,6 +42,7 @@ public class User {
     @NotBlank(message = "Field must not be empty")
     private String email;
 
+    @Enumerated(EnumType.STRING)
     private Specialist specialist;
 
     @NotEmpty
@@ -60,11 +58,12 @@ public class User {
     @Column(name = "created_at")
     private LocalDate createdAt;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany
     @ToString.Exclude
     private List<Visit> visitList;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+   // @JoinColumn(name = "id", referencedColumnName = "userData_id")
     private UserData userData;
 
     @Enumerated(EnumType.STRING)

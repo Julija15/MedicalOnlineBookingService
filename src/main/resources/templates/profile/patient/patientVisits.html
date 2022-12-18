@@ -1,49 +1,47 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<div th:insert="/includes/head::head"></div>
+<div class="p-3 bg-image" style="
+background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
+height: 80px;
+"></div>
 
 <body>
 
-<div class="p-3 bg-image" style="
-        background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
-        height: 100px;
-        "></div>
-
-<div class="text"
-     th:if="${user.getRole() == T(com.example.medicalonlinebookingservice.entity.enums.Role).PATIENT}">
-    <h2> Patient: [[${user.name}]] ([[${user.getUser().getUsername()}]])</h2>
-</div>
+<h3 class="form-signin-heading" style="text-align:center"> Your reserved visits </h3>
 
     <div class="top">
         <a href="/medicalonlinebookingservice/index">Home Page</a>
-        <a href="/medicalonlinebookingservice/profile/patient/{id}">Home Page</a>
+        <a href="/medicalonlinebookingservice/profile/patient">Home Page</a>
         <a href="/medicalonlinebookingservice/logout">Logout</a>
     </div>
 
-    <div class="container">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Specialist</th>
+            <th scope="col">Doctor firstname</th>
+            <th scope="col">Date and time</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="eachVisit : ${patientVisits}">
+            <td th:text="${eachVisit.doctor.specialist.name()}"/>
+            <td th:text="${eachVisit.doctor.lastname}"/>
+            <td th:text="${eachVisit.startTime}">
+            <td>
+            <form th:action="@{/profile/patient/deleteVisit}" method="post" th:object="${visit}">
+                <input type="hidden" name="id" th:value="${eachVisit.id}"/>
+                <button class="button" type="submit">Delete</button>
+            </form>
+            </td>
+        </tr>
+        </tbody>
+        </thead>
+    </table>
 
-        <form action="/medicalonlinebookingservice/doctor/{id}" class="form-signin" method="POST" th:object="visit">
-            <h3 class="form-signin-heading"> All reserved visits: </h3>
-                <div class="container">
-                    <div class="row">
-                        <div class="col mt-5">
-                            <div th:each="visit : ${visitList}">
-                                <input type="radio" name="patient" th:value="${patient.getVisit().isReserved}"/>
-                                <br>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        </form>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
-            crossorigin="anonymous"></script>
-    </body>
-    </html>
-    <a href="/medicalonlinebookingservice/logout">Logout</a>
-</div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"

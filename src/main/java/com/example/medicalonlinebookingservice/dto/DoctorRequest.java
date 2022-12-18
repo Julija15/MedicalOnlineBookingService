@@ -1,28 +1,34 @@
 package com.example.medicalonlinebookingservice.dto;
 
-import com.example.medicalonlinebookingservice.entity.User;
-
 import java.time.LocalDate;
 
 public class DoctorRequest {
 
-    private User doctor;
+    private Long doctorId;
 
-    private LocalDate date;
+    private LocalDate visitsDate;
 
-    public User getDoctor() {
-        return doctor;
+    public DoctorRequest() {
     }
 
-    public void setDoctor(User doctor) {
-        this.doctor = doctor;
+    public DoctorRequest(Long doctorId, LocalDate visitsDate) {
+        this.doctorId = doctorId;
+        this.visitsDate = visitsDate;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public Long getDoctorId() {
+        return doctorId;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDoctorId(Long doctorId) {
+        this.doctorId = doctorId;
+    }
+
+    public LocalDate getVisitsDate() {
+        return visitsDate;
+    }
+
+    public void setVisitsDate(LocalDate visitsDate) {
+        this.visitsDate = visitsDate;
     }
 }
