@@ -8,27 +8,26 @@
 
 <body>
 
-<!--<div class="text"-->
-<!--     th:if="${session.user.getRole == T(com.example.medicalonlinebookingservice.entity.enums.Role).ADMIN}">-->
-<!--    <h2> Admin: [[${session.user.getFirstname}]] ([[${"session.user.getLastname}]])</h2>-->
-<!--</div>-->
-
+<div class="container">
 <div class="top">
     <a href="/medicalonlinebookingservice/index">Home Page</a>
     <a href="/medicalonlinebookingservice/logout">Logout</a>
     <a href="/medicalonlinebookingservice/profile/admin/updateUser">Update user</a>
 </div>
+
 <br>
+
 <form th:action="@{/profile/admin/createTimeTable}" method="post" th:object="${doctorRequest}">
-    <label>Select a doctor and creat visit:</label>
+    <h2 style="text-align:center">Select a doctor and creat doctors visit:</h2>
     <div th:each="doctor: ${doctors}">
         <input type="radio" name="doctorId" th:value="${doctor.id}"/>
         <label th:text="${doctor.firstname} + ${doctor.lastname } + ${doctor.specialist.name()}"></label>
-        <br>
     </div>
     <input type="date" name="visitsDate"/>
     <button class="button" type="submit">Create visits</button>
 </form>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
         crossorigin="anonymous"></script>

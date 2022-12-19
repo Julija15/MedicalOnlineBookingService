@@ -33,7 +33,6 @@ public class UserData extends AbstractEntity {
     private String flat;
 
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-   // @JoinColumn(name = "id", referencedColumnName = "user_id")
     private User user;
 
     public User getUser() {

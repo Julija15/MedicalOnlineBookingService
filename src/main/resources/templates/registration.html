@@ -7,136 +7,66 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+
 <body>
 
-<div class="top">
-    <a th:if="${userRegistration == null}" href="/medicalonlinebookingservice/index">Start page</a>
+<div class="container">
+
+    <div class="top">
+        <a  href="/medicalonlinebookingservice/index">Start page</a>
+        <br>
+        <a  href="/medicalonlinebookingservice/login">Login</a>
+    </div>
+    <h2 style="text-align:center"> New user registration </h2>
+
+<form  th:action="@{/registration}" th:object="${userRegistration}" method="post">
+
+    <input type="text" th:field="*{username}" placeholder="username"/>
+    <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+    <br>
+    <input type="password" th:field="*{password}" placeholder="password"/>
+    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+    <hr>
+    <h2 style="text-align:center">Patient data:</h2>
+    <br>
+    <input type="text" th:field="*{firstname}" placeholder="Firstname"/>
+    <p th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></p>
+    <br>
+    <input type="text" th:field="*{lastname}" placeholder="Lastname"/>
+    <p th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></p>
+    <br>
+    <input type="date" th:field="*{dateOfBirth}" placeholder="dateOfBirth"/>
+    <p th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></p>
+    <br>
+    <select name="gender" id="gender">
+        <option th:each="gender : ${T(com.example.medicalonlinebookingservice.entity.enums.Gender).values()}"
+                th:value="${gender}"
+                th:text="${gender}"></option>
+    </select>
+    <br>
+    <input type="text" th:field="*{phoneNumber}" placeholder="PhoneNumber"/>
+    <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></p>
+    <hr>
+    <h2 style="text-align:center">Address:</h2>
+    <br>
+    <input type="text" th:field="*{city}" placeholder="city"/>
+    <p th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></p>
+    <br>
+    <input type="text" th:field="*{street}" placeholder="street"/>
+    <p th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></p>
+    <br>
+    <input type="text" th:field="*{house}" placeholder="house"/>
+    <p th:if="${#fields.hasErrors('house')}" th:errors="*{house}"></p>
+    <br>
+    <input type="text" th:field="*{flat}" placeholder="house"/>
+    <p th:if="${#fields.hasErrors('flat')}" th:errors="*{flat}"></p>
+    <br>
+    <input type="text" th:field="*{email}" placeholder="email"/>
+    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+    <br>
+    <br>
+    <button>Submit</button>
+</form>
 </div>
-<!--<form th:action="@{/medicalonlinebookingservice/registration}" th:method="post" th:object="${userRegistration}">-->
-
-
-    <h2> New user registration </h2>
-
-    <form th:action="@{/registration}" th:object="${userRegistration}" method="post">
-        <input type="text" th:field="*{username}" placeholder="username"/>
-        <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
-        <br>
-        <input type="password" th:field="*{password}" placeholder="password"/>
-        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
-        <br>
-        <br>
-        <h2 style="text-align:center">Patient data:</h2>
-        <br>
-        <br>
-        <input type="text" th:field="*{firstname}" placeholder="Firstname"/>
-        <p th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></p>
-        <br>
-        <input type="text" th:field="*{lastname}" placeholder="Lastname"/>
-        <p th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></p>
-        <br>
-        <input type="date" th:field="*{dateOfBirth}" placeholder="dateOfBirth"/>
-        <p th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></p>
-        <br>
-        <select name="gender" id="gender">
-            <option th:each="gender : ${T(com.example.medicalonlinebookingservice.entity.enums.Gender).values()}" th:value="${gender}"
-                                th:text="${gender}"></option>
-        </select>
-        <br>
-        <input type="text" th:field="*{phoneNumber}" placeholder="PhoneNumber"/>
-        <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></p>
-        <br>
-        <h2 style="text-align:center">Address:</h2>
-        <br>
-        <input type="text" th:field="*{city}" placeholder="city"/>
-        <p th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></p>
-        <br>
-        <input type="text" th:field="*{street}" placeholder="street"/>
-        <p th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></p>
-        <br>
-        <input type="text" th:field="*{house}" placeholder="house"/>
-        <p th:if="${#fields.hasErrors('house')}" th:errors="*{house}"></p>
-        <br>
-        <input type="text" th:field="*{flat}" placeholder="house"/>
-        <p th:if="${#fields.hasErrors('flat')}" th:errors="*{flat}"></p>
-        <br>
-        <input type="text" th:field="*{email}" placeholder="email"/>
-        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
-
-        <button>Submit</button>
-    </form>
-
-<!--    <div style="clear:both; padding:8px; text-align:right">-->
-<!--        <input type="text" th:field="*{username}" th:placeholder="username"/>-->
-<!--    </div>-->
-
-<!--    <div style="clear:both; padding:8px; text-align:right">-->
-<!--        <label for="password" style="float:left">Password: </label>-->
-<!--        <input type="password" id="password" required/>-->
-<!--    </div>-->
-
-
-<!--    <h2 style="text-align:center">Patient data:</h2>-->
-
-<!--    <div style="clear:both; padding:8px; text-align:right">-->
-<!--        <label for="firstName" style="float:left">First Name: </label>-->
-<!--        <input type="text" id="firstName" required/>-->
-<!--    </div>-->
-<!--    <div style="clear:both; padding:8px; text-align:right">-->
-<!--        <label for="lastName" style="float:left">Last Name: </label>-->
-<!--        <input type="text" id="lastName" required/>-->
-<!--    </div>-->
-
-
-<!--    <div style="clear:both; padding:8px; text-align:right">-->
-<!--        <label for="dateOfBirth" style="float:left">Date of Birth: </label>-->
-<!--        <input type="date" id="dateOfBirth" required/>-->
-<!--    </div>-->
-
-<!--    <div style="clear:both; padding:8px; text-align:right">-->
-<!--        <label for="gender-select" style="float:left">Sex: </label>-->
-<!--        <select name="gender" id="gender-select">-->
-<!--            <option th:value="${T(com.example.medicalonlinebookingservice.entity.enums.Gender).FEMALE}"-->
-<!--                    th:text="FEMALE"></option>-->
-<!--            <option th:value="${T(com.example.medicalonlinebookingservice.entity.enums.Gender).MALE}"-->
-<!--                    th:text="MALE"></option>-->
-<!--        </select>-->
-<!--    </div>-->
-
-<!--    <div style="clear:both; padding:8px; text-align:right">-->
-<!--        <label for="phoneNumber" style="float:left">Phone number: </label>-->
-<!--        <input type="tel" id="phoneNumber" required/>-->
-<!--    </div>-->
-
-
-<!--    <div style="width:10%"></div>-->
-
-<!--    <h2 style="text-align:center">Address:</h2>-->
-
-<!--    <div style="clear:both; padding:8px; text-align:right">-->
-<!--        <label for="city" style="float:left">City: </label>-->
-<!--        <input type="text" id="city" required/>-->
-<!--    </div>-->
-
-<!--    <div style="clear:both; padding:8px; text-align:right">-->
-<!--        <label for="street" style="float:left">Street: </label>-->
-<!--        <input type="text" id="street" required/>-->
-<!--    </div>-->
-
-<!--    <div style="clear:both; padding:8px; text-align:right">-->
-<!--        <label for="house" style="float:left">House: </label>-->
-<!--        <input type="text" id="house" required/>-->
-<!--    </div>-->
-
-<!--    <div style="clear:both; padding:8px; text-align:right">-->
-<!--        <label for="flat" style="float:left">Flat: </label>-->
-<!--        <input type="text" id="flat"/>-->
-<!--    </div>-->
-
-
-<!--    <div class="reg-button">-->
-<!--        <button style="width:100px" type="button"> Create</button>-->
-<!--    </div>-->
-<!--</form>-->
-
 </body>
 </html>

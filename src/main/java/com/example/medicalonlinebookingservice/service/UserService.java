@@ -24,12 +24,13 @@ public class UserService {
 
     private UserRepository userRepository;
 
-
+    private VisitService visitService;
 
     private static final Logger log = Logger.getLogger(UserService.class.getName());
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,VisitService visitService) {
         this.userRepository = userRepository;
+        this.visitService = visitService;
 
     }
 
@@ -91,11 +92,14 @@ public class UserService {
         int hour = 8;
         while (hour <= 18) {
             Visit visit = new Visit(doctor, localDate.atTime(hour, 0), localDate);
-            visits.add(visit);
+           // visits.add(visit);
             hour++;
+            visitService.save(visit);
         }
-        doctor.setVisitList(visits);
-        userRepository.save(doctor);
+//        List<Visit> allVisits = visitService.findDoctorVisits(doctor);
+//        allVisits.addAll(visits);
+//        doctor.setVisitList(allVisits);
+//        userRepository.save(doctor);
         log.info("IN creatTimeTable - doctor with id: {} and localdate{} creat ");
     }
 

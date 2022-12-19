@@ -9,10 +9,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.text.DateFormat;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
+
 
 
 @Entity
@@ -63,7 +62,6 @@ public class User extends AbstractEntity{
     private List<Visit> visitList;
 
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-   // @JoinColumn(name = "id", referencedColumnName = "userData_id")
     private UserData userData;
 
     @Enumerated(EnumType.STRING)

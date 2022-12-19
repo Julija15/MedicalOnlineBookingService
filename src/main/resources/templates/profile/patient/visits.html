@@ -14,17 +14,20 @@
       integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 
 <body>
-<div class="top" >
+
+<div class="top">
     <a href="/medicalonlinebookingservice/index">Start Page</a>
-    <a href="/medicalonlinebookingservice/profile/patient/{id}">Patient hom page</a>
+    <a href="/medicalonlinebookingservice/profile/patient">Patient hom page</a>
     <a href="/medicalonlinebookingservice/logout">Logout</a>
 </div>
 
 <form th:action="@{/profile/patient/reserveVisit}" method="post" th:object="${visit}">
-    <label>Select a visit:</label>
+    <h2>Select a visit:</h2>
+    <hr>
     <div th:each="eachVisit: ${visits}">
         <input type="radio" name="id" th:value="${eachVisit.id}"/>
         <label th:text="${eachVisit.startTime}"></label>
+        <br>
         <br>
     </div>
     <button class="button" type="submit">Reserve visit</button>

@@ -12,12 +12,15 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
 public class VisitService {
     private VisitRepository visitRepository;
     private UserRepository userRepository;
+
+    private static final Logger log = Logger.getLogger(UserService.class.getName());
 
     public VisitService(VisitRepository visitRepository, UserRepository userRepository) {
         this.visitRepository = visitRepository;
@@ -46,6 +49,7 @@ public class VisitService {
                 visit.setPatient(patient);
                 patient.getVisitList().add(visit);
                 userRepository.save(patient);
+                log.info("IN addUserToVisit - user add to visit visitId: {} save");
             } else {
                 throw new IllegalArgumentException("Visit is reserved");
             }
@@ -61,6 +65,7 @@ public class VisitService {
             if (visit.getPatient() != null && visit.getPatient().getId() == patient.getId()) {
                 visit.setPatient(null);
                 visitRepository.save(visit);
+                log.info("IN deleteUserFromVisit - user delete von visit visitId: {}");
             } else {
                 throw new IllegalArgumentException("Visit is reserved");
             }
@@ -81,5 +86,13 @@ public class VisitService {
     public List<Visit> findAllVisitByPatient(User patient) {
         List<Visit> visits = visitRepository.findAllByPatient(patient);
         return visits.stream().filter(Visit::isReserved).collect(Collectors.toList());
+    }
+
+    public List<Visit> findDoctorVisits(User doctor) {
+        return visitRepository.findAllByDoctor(doctor);
+    }
+
+    public void save(Visit visit) {
+        visitRepository.save(visit);
     }
 }

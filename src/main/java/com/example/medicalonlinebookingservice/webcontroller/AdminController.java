@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 
-
 @Controller
 @RequestMapping("/profile/admin")
 public class AdminController {
@@ -31,24 +30,29 @@ public class AdminController {
         model.addAttribute("doctors", doctorList);
         return "/profile/admin/admin";
     }
+
     @PostMapping("/createTimeTable")
-    public String creatTimeTable(@ModelAttribute ("doctorRequest") DoctorRequest doctorRequest, Model model, HttpSession session) {
+    public String creatTimeTable(@ModelAttribute("doctorRequest") DoctorRequest doctorRequest, Model model, HttpSession session) {
         User doctor = userService.findUserById(doctorRequest.getDoctorId());
         userService.creatTimeTable(doctor, doctorRequest.getVisitsDate());
         model.addAttribute("doctor", doctor);
-        model.addAttribute("date",doctorRequest.getVisitsDate());
-        return "/profile/admin/admin";
+        model.addAttribute("date", doctorRequest.getVisitsDate());
+        return "redirect:/profile/admin";
     }
 
     @PutMapping("/updateUser")
-    public String updateUser(@PathVariable Long id, User user, Model model){
+    public String updateUser(@PathVariable Long id, User user, HttpSession session, Model model) {
         User userDB = userService.findUserById(id);
-        userService.update(userDB,user);
+        userService.update(userDB, user);
         userService.save(userDB);
-        model.addAttribute("firstname",user.getFirstname());
-        model.addAttribute("lastname",user.getLastname());
-        model.addAttribute("userDB",userDB);
-        model.addAttribute("message","User is update");
+        model.addAttribute("role", user.getRole());
+        model.addAttribute("specialist", user.getSpecialist());
+        model.addAttribute("firstname", user.getFirstname());
+        model.addAttribute("lastname", user.getLastname());
+        model.addAttribute("password", user.getPassword());
+        model.addAttribute("lastname", user.getLastname());
+        model.addAttribute("userDB", userDB);
+        model.addAttribute("message", "User is update");
         return "/user/{id}";
     }
 }
